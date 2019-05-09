@@ -145,14 +145,12 @@
             content: `http://dapp.cryptokaiju.io/${this.openSeaData.token_id}/`
           },
           {
-            property: "twitter:card",
-            content: "summary_large_image"
-          },
-          {
+            hid: `twitter:description`,
             property: "twitter:description",
             content: `${this.openSeaData.name} - ${this.openSeaData.description}`
           },
           {
+            hid: `twitter:title`,
             property: "twitter:title",
             content: `${this.openSeaData.name} - ${this.openSeaData.description}`
           }
