@@ -123,9 +123,6 @@ module.exports = {
         {src: '~/plugins/plugins.js', ssr: false},
         {src: '~/plugins/filters.js', ssr: false},
         {src: '~/plugins/vue-social-sharing.js', ssr: true},
-        // '~/plugins/plugins.js',
-        // '~/plugins/filters.js',
-        // '~/plugins/vue-social-sharing.js'
     ],
 
     /*

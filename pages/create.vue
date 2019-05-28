@@ -152,7 +152,7 @@
             </div>
           </div>
 
-          <button type="button" class="btn btn-primary" v-on:click="giveBirth">Kaiju Birth</button>
+          <button type="button" class="btn btn-primary" @click="giveBirth">Kaiju Birth</button>
 
           <div class="row">
             <div class="col mt-5" v-if="response.ipfsHash">

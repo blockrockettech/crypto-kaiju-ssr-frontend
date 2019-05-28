@@ -12,11 +12,22 @@
   ],
   // required to lint *.vue files
   "plugins": [
-    "html",
     "vue"
   ],
   // add your custom rules here
   "rules": {
+    "vue/max-attributes-per-line": 0,
+    "vue/html-self-closing": 0,
+    "vue/html-closing-bracket-newline": 0,
+    "vue/multiline-html-element-content-newline": 0,
+    "vue/mustache-interpolation-spacing": 0,
+    "vue/singleline-html-element-content-newline": 0,
+    "vue/attributes-order": 0,
+    "vue/html-closing-bracket-spacing": 0,
+    "vue/name-property-casing": 0,
+    "vue/html-indent": 0,
+    "vue/order-in-components": 0,
+    "vue/require-default-prop": 0,
     // Disable semi colon checking
     "semi": [
       2,

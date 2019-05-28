@@ -5,22 +5,32 @@
     <div class="row">
       <div class="col">
         <h3>Colours</h3>
-        <pie-chart :donut="true" :data="colourStats" :colors="['green', 'purple']"></pie-chart>
+        <pie-chart :donut="true"
+                   :data="colourStats"
+                   :colors="['green', 'purple']">
+        </pie-chart>
       </div>
       <div class="col">
         <h3>Gender</h3>
-        <pie-chart :donut="true" :data="genderStats" :colors="['lightblue', '#fff0f2', 'purple']"></pie-chart>
+        <pie-chart :donut="true"
+                   :data="genderStats"
+                   :colors="['lightblue', '#fff0f2', 'purple']">
+        </pie-chart>
       </div>
     </div>
 
     <div class="row mt-5">
       <div class="col">
         <h3>Class</h3>
-        <pie-chart :donut="true" :data="classStats"></pie-chart>
+        <pie-chart :donut="true"
+                   :data="classStats">
+        </pie-chart>
       </div>
       <div class="col">
         <h3>Skill</h3>
-        <pie-chart :donut="true" :data="skillStats"></pie-chart>
+        <pie-chart :donut="true"
+                   :data="skillStats">
+        </pie-chart>
       </div>
     </div>
 
