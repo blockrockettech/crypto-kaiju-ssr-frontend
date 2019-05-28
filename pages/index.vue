@@ -2,7 +2,6 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-5">
-                <h1 class="display-4 text-left mb-4 text-primary">CryptoKaiju</h1>
                 <h2>Collectible Vinyl Toys</h2>
                 <p><em>Powered by the Ethereum Blockchain</em></p>
                 <p class="mt-5" v-if="totalSupply">There are currently <span
