@@ -86,14 +86,13 @@
 
 <script>
 
-  import Card from '~/components/Card';
   import cryptoKaijusApiService from '~/servcies/CryptoKaijusApiService';
   import ClickableAddress from "~/components/ClickableAddress";
 
   export default {
     layout: 'default',
     name: 'token',
-    components: {ClickableAddress, Card},
+    components: {ClickableAddress},
     data() {
       return {
         loading: false,

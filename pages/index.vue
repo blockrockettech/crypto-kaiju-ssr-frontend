@@ -15,10 +15,13 @@
                  class="form-control form-control-lg w-75"
                  id="kId"
                  v-model="searchData.kId"
-                 placeholder="Name, Token ID or NFC ID"/>
+                 placeholder="Token ID or NFC ID"/>
         </div>
         <b-button type="button" variant="primary" class="btn-lg" :disabled="kaijus.length < 1">
-          Search
+          Search NFC ID
+        </b-button>
+        <b-button type="button" variant="primary" class="btn-lg" :disabled="kaijus.length < 1">
+          Token ID
         </b-button>
       </div>
     </div>
@@ -41,13 +44,12 @@
 <script>
 
   import {mapState} from 'vuex';
-  import ClickableTransaction from '~/components/ClickableTransaction';
   import Card from '~/components/Card';
 
   export default {
     layout: 'default',
     name: 'home',
-    components: {Card, ClickableTransaction},
+    components: {Card},
     data() {
       return {
         searchData: {

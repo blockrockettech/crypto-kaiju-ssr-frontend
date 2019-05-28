@@ -31,14 +31,13 @@
 
   import {mapState} from 'vuex';
   import * as actions from '~/store/actions';
-  import ClickableTransaction from '~/components/ClickableTransaction';
   import ClickableAddress from '~/components/ClickableAddress';
   import Card from '~/components/Card';
 
   export default {
     layout: 'default',
     name: 'account',
-    components: {Card, ClickableTransaction, ClickableAddress},
+    components: {Card, ClickableAddress},
     computed: {
       ...mapState(['account', 'accountKaijus', 'transfers'])
     },

@@ -251,7 +251,8 @@
             'Doctor',
             'Witch',
             'Sophisticated',
-            'Omnipotent'
+            'Omnipotent',
+            'Rare AF',
           ],
           skills: [
             'Influential',
@@ -299,7 +300,7 @@
             'Gregarious',
             'Philosophical',
             'Sailor',
-            'Rascal'
+            'Rascal',
           ],
           batch: ['Jaiantokoin', 'Genesis']
         },
