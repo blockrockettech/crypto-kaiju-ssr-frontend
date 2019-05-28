@@ -38,7 +38,7 @@ $ gcloud components install beta
  gcloud builds submit --tag gcr.io/cryptokaiju-beta/dapp
 ```
 
-* Create new service un gCloud mangement console - e.g. https://console.cloud.google.com/run
+* Create new service un gCloud management console - e.g. https://console.cloud.google.com/run
 
 * Add new service
 	* Once Docker image deployed
@@ -46,7 +46,7 @@ $ gcloud components install beta
 	* Deploy!
 
 
-gcl0ud Login
+Google Cloud Setup
 ============
 
 * `gcloud init` and login/auth
