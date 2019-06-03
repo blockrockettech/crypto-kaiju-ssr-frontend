@@ -51,12 +51,26 @@ Google Cloud Setup
 
 * `gcloud init` and login/auth
 
+* Select create new configuration
+    * Select `cryptokaiju-39233` when setting up `LIVE` site
+        * Ensure this is called `cryptokaiju-live`
+    * Select `cryptokaiju-beta` when setting up `TEST` site
+        * Ensure this is called `cryptokaiju-beta`
+
+* After setting up both accounts run
+    * `gcloud config configurations list` and you should see something similar to this
+
+```
+NAME              IS_ACTIVE  ACCOUNT                        PROJECT            DEFAULT_ZONE  DEFAULT_REGION
+cryptokaiju-beta  False      <your.email>@blockrocket.tech  cryptokaiju-beta
+cryptokaiju-live  True       <your.email>@blockrocket.tech  cryptokaiju-39233
+```
+
 * make new configuration 
     * `gcloud config configurations create cryptokaiju-beta`
     
 * set configuration 
     * `gcloud config configurations activate cryptokaiju-beta`
-
 
 * You can view and change the properties of your active configuration using the following commands:
 
