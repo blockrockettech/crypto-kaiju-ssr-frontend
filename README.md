@@ -25,7 +25,7 @@ For detailed explanation on how things work, checkout [Nuxt.js docs](https://nux
 Setup
 =====
 
-* NodeJS 10 required due to Nuxt.js compilation bug on node V8
+* `NodeJS 10` required due to Nuxt.js compilation bug on node V8
 * Follow this - https://cloud.google.com/run/docs/setup
 
 * Install beta tools
