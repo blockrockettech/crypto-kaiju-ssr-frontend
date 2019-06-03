@@ -132,7 +132,7 @@ const createStore = () => {
         }
 
         // dispatch(actions.WATCH_TRANSFERS);
-        dispatch(actions.LOAD_ALL_KAIJUS);
+        // dispatch(actions.LOAD_ALL_KAIJUS);
 
         await refreshHandler();
       },

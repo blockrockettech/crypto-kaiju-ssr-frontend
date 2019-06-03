@@ -5,8 +5,6 @@
     <p>
       <clickable-address :eth-address="account"></clickable-address>
     </p>
-    accountKaijus = {{accountKaijus}}
-    account = {{account}}
 
     <div class="row mt-5" v-if="!accountKaijus || accountKaijus.length === 0">
       <div class="col text-center">
@@ -30,9 +28,9 @@
 <script>
 
   import {mapState} from 'vuex';
-  import * as actions from '~/store/actions';
-  import ClickableAddress from '~/components/ClickableAddress';
-  import Card from '~/components/Card';
+  import * as actions from '../store/actions';
+  import ClickableAddress from '../components/ClickableAddress';
+  import Card from '../components/Card';
 
   export default {
     layout: 'default',

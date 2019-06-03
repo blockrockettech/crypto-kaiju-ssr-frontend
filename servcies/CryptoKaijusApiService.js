@@ -37,6 +37,11 @@ class CryptoKaijusApiService {
             .then((payload) => payload.data);
     }
 
+    async getTokenTraits(network = 1) {
+        return axios.get(`${API_CONFIG.live}/network/${network}/token/traits`, AXIOS_CONFIG)
+            .then((payload) => payload.data);
+    }
+
     async getAllTokens(network = 1) {
         return axios.get(`${API_CONFIG.live}/network/${network}/token/all`, AXIOS_CONFIG)
             .then((payload) => payload.data);

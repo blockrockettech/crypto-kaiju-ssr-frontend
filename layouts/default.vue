@@ -133,7 +133,7 @@
           // Bootstrap the full app
           this.$store.dispatch(actions.INIT_APP, bootStrappedWeb3);
         } else {
-          this.$store.dispatch(actions.LOAD_ALL_KAIJUS);
+          // this.$store.dispatch(actions.LOAD_ALL_KAIJUS);
         }
 
       });

@@ -8,12 +8,6 @@
       </div>
     </div>
 
-    <!--<div class="row text-center">-->
-    <!--<div class="card-deck mx-auto">-->
-    <!--<card :cdata="kaijus" class="m-2"></card>-->
-    <!--</div>-->
-    <!--</div>-->
-
     <h3 v-if="opensea">Details</h3>
 
     <div class="row" v-if="opensea">

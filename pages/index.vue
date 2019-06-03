@@ -17,7 +17,6 @@
                            v-model="searchData.kId"
                            placeholder="Token ID or NFC ID"/>
                 </div>
-                Search by
                 <b-button type="button" variant="primary" class="btn-lg"
                           :disabled="isSearching"
                           @click="searchByNfcId">
@@ -28,6 +27,15 @@
                           @click="searchByTokenId">
                     Token ID
                 </b-button>
+                <code class="pl-2" v-show="isSearching">
+                    Finding Kaiju ...
+                </code>
+                <button type="button" class="pl-2 btn btn-link" v-show="searchResult && !isSearching" @click="clearSearch">
+                    <code>
+                        Start over
+                    </code>
+                </button>
+
             </div>
         </div>
 
@@ -118,6 +126,11 @@
                     .finally(() => {
                         this.isSearching = false;
                     });
+            },
+            clearSearch() {
+                this.isSearching = false;
+                this.searchResult = null;
+                this.nonFound = false;
             }
         },
         async asyncData() {
