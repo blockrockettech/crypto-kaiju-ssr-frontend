@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Kaiju Foundry</h1>
+    <h1>Classic Kaiju Foundry</h1>
 
     <div class="row mt-5">
       <div class="col ml-3 mr-3">
@@ -194,7 +194,7 @@
 
   export default {
     layout: 'default',
-    name: 'creator',
+    name: 'classic',
     components: {ClickableTransaction},
     data() {
       return {

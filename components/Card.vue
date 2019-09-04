@@ -9,7 +9,7 @@
           <p class="creator badge badge-primary">#{{ cdata.tokenId.toString() }}</p>
         </div>
         <div class="col text-right">
-          <img :src="cdata.ipfsData.image" class="" style="max-width: 35px"/>
+          <img :src="cdata.ipfsData.image" class="" style="max-width: 35px" alt="kaiju image"/>
         </div>
       </figcaption>
 
