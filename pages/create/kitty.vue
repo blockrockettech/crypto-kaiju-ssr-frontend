@@ -222,15 +222,19 @@
                     name: this.formData.name,
                     description: this.formData.description,
                     image: this.formData.image,
+                    background_color: this.formData.background_color,
                     attributes: {
                         dob: this.formData.dob,
                         nfc: this.formData.nfcId,
                         colour: this.formData.colour,
                         batch: this.formData.batch,
                         class: _.lowerCase(_.get(this.formData, 'kclass')),
-                        skill: _.lowerCase(_.get(this.formData, 'skill'))
+                        skill: _.lowerCase(_.get(this.formData, 'skill')),
+                        kitty_id: this.foundKitty.token_id,
+                        ...this.foundKitty.attributes
                     },
                     external_uri: 'https://cryptokaiju.io',
+                    external_kitty_uri: this.foundKitty.external_kitty_uri,
                 };
             }
         },
@@ -246,7 +250,8 @@
                     name: null,
                     description: null,
                     recipient: null,
-                    batch: 'kitty-genesis',
+                    background_color: null,
+                    batch: 'kitty',
                     nfc: null,
                     colour: null,
                     class: null,
@@ -264,7 +269,7 @@
             };
         },
         mounted() {
-
+            
         },
         methods: {
             async lookupKittyData() {
@@ -272,25 +277,45 @@
                 const data = await cryptoKaijusApiService.findKittyDataById(this.lookupForm.kittyId);
                 this.lookupForm.loadingKitty = false;
                 console.log(data);
+
+                const colorprimary = _.find(data.traits, (trait) => trait.trait_type === 'colorprimary');
+                const colorsecondary = _.find(data.traits, (trait) => trait.trait_type === 'colorsecondary');
+                const colortertiary = _.find(data.traits, (trait) => trait.trait_type === 'colortertiary');
+                const generation = _.find(data.traits, (trait) => trait.trait_type === 'generation');
+                const pattern = _.find(data.traits, (trait) => trait.trait_type === 'pattern');
+                const mouth = _.find(data.traits, (trait) => trait.trait_type === 'mouth');
+                const body = _.find(data.traits, (trait) => trait.trait_type === 'body');
+                const eyes = _.find(data.traits, (trait) => trait.trait_type === 'eyes');
+                const coloreyes = _.find(data.traits, (trait) => trait.trait_type === 'coloreyes');
+
                 this.foundKitty = {
                     ...data,
                     name: data.name,
                     description: data.description,
-                    external_link: data.external_link,
+                    external_kitty_uri: data.external_link,
                     background_color: data.background_color,
+                    // FIXME download image and manipulate it
                     raw_svg: `https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/${this.lookupForm.kittyId}.svg`,
+                    attributes: {
+                        colorprimary: colorprimary.value,
+                        colorsecondary: colorsecondary.value,
+                        colortertiary: colortertiary.value,
+                        generation: generation.value,
+                        pattern: pattern.value,
+                        mouth: mouth.value,
+                        body: body.value,
+                        eyes: eyes.value,
+                        coloreyes: coloreyes.value,
+                    }
                 };
 
                 // Set form data to found kitty
                 this.formData.name = data.name;
                 this.formData.description = data.description;
                 this.formData.image = this.foundKitty.raw_svg;
+                this.formData.background_color = this.foundKitty.background_color;
 
-                const findPrimaryColour = _.find(data.traits, (trait) => {
-                    return trait.trait_type === 'colorprimary';
-                });
-
-                this.formData.colour = findPrimaryColour.value;
+                this.formData.colour = colorprimary.value;
             },
             birthKitty() {
                 this.checkForm();

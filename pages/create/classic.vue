@@ -227,7 +227,7 @@
           ],
           kclass: kclass,
           skills: skills,
-          batch: ['Jaiantokoin', 'Genesis']
+          batch: ['Jaiantokoin', 'Genesis', "Spookymon"]
         },
         formData: {
           errors: [],
