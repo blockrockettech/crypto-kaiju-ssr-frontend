@@ -22,11 +22,6 @@ class CryptoKaijusApiService {
             .then((payload) => payload.data);
     }
 
-    async getOpenSeaDetials(network = 1, tokenId) {
-        return axios.get(`${API_CONFIG.live}/network/${network}/os/id/${tokenId}`, AXIOS_CONFIG)
-            .then((payload) => payload.data);
-    }
-
     async getNfcDetails(network = 1, nfcId) {
         return axios.get(`${API_CONFIG.live}/network/${network}/token/nfc/${nfcId}`, AXIOS_CONFIG)
             .then((payload) => payload.data);
@@ -59,6 +54,16 @@ class CryptoKaijusApiService {
 
     async searchByNfcId(network = 1, nfcId) {
         return axios.get(`${API_CONFIG.live}/network/${network}/search/nfc/${nfcId}`, AXIOS_CONFIG)
+            .then((payload) => payload.data);
+    }
+
+    async getOpenSeaDetials(network = 1, tokenId) {
+        return axios.get(`${API_CONFIG.live}/network/${network}/os/id/${tokenId}`, AXIOS_CONFIG)
+            .then((payload) => payload.data);
+    }
+
+    async findKittyDataById(kittyId) {
+        return axios.get(`${API_CONFIG.local}/network/1/os/search/kitty-data/${kittyId}`, AXIOS_CONFIG)
             .then((payload) => payload.data);
     }
 }
