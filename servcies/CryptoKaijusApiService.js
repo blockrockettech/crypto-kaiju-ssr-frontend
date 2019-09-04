@@ -63,7 +63,12 @@ class CryptoKaijusApiService {
     }
 
     async findKittyDataById(kittyId) {
-        return axios.get(`${API_CONFIG.local}/network/1/os/search/kitty-data/${kittyId}`, AXIOS_CONFIG)
+        return axios.get(`${API_CONFIG.live}/network/1/os/search/kitty-data/${kittyId}`, AXIOS_CONFIG)
+            .then((payload) => payload.data);
+    }
+
+    async buildBandanaSvg(kittyId) {
+        return axios.get(`${API_CONFIG.live}/image/decorate/kitty/${kittyId}/bandana`, AXIOS_CONFIG)
             .then((payload) => payload.data);
     }
 }

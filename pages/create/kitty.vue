@@ -188,11 +188,11 @@
         </div>
 
         <div class="row mt-5">
-            <div class="col">
+            <div class="col-6">
                 <pre class="text-muted">{{generateIpfsData}}</pre>
             </div>
-            <div class="col">
-                TODO output generated SVG
+            <div class="col-6">
+                <div v-html="generatedBandanaSvg"></div>
             </div>
         </div>
 
@@ -245,6 +245,7 @@
                     kittyId: 1511406
                 },
                 foundKitty: {},
+                generatedBandanaSvg: null,
                 formData: {
                     errors: [],
                     name: null,
@@ -269,7 +270,7 @@
             };
         },
         mounted() {
-            
+
         },
         methods: {
             async lookupKittyData() {
@@ -287,6 +288,9 @@
                 const body = _.find(data.traits, (trait) => trait.trait_type === 'body');
                 const eyes = _.find(data.traits, (trait) => trait.trait_type === 'eyes');
                 const coloreyes = _.find(data.traits, (trait) => trait.trait_type === 'coloreyes');
+
+                const bandanaSvg = await cryptoKaijusApiService.buildBandanaSvg(this.lookupForm.kittyId);
+                this.generatedBandanaSvg = bandanaSvg;
 
                 this.foundKitty = {
                     ...data,
