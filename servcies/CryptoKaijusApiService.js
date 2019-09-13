@@ -85,9 +85,16 @@ class CryptoKaijusApiService {
             .then((payload) => payload.data);
     }
 
-    async buildBandanaSvg(kittyId) {
-        return axios.get(`${getApi()}/image/decorate/kitty/${kittyId}/bandana`, AXIOS_CONFIG)
+    async downloadKittyBandana(kittyId) {
+        return axios.get(`${getApi()}/image/decorate/kitty/${kittyId}/bandana`, {
+            ...AXIOS_CONFIG,
+            responseType: 'arraybuffer'
+        })
             .then((payload) => payload.data);
+    }
+
+    buildBandanaUrl(kittyId) {
+        return `${getApi()}/image/decorate/kitty/${kittyId}/bandana`;
     }
 }
 

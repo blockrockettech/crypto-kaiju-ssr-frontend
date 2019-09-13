@@ -196,7 +196,7 @@
                 <pre class="text-muted">{{generateIpfsData}}</pre>
             </div>
             <div class="col-6">
-                <div v-html="generatedBandanaSvg"></div>
+                <img :src="generatedBandanaUrl" class="img-fluid"/>
             </div>
         </div>
 
@@ -214,6 +214,7 @@
     import ClickableTransaction from '~/components/ClickableTransaction';
     import Web3 from 'web3';
     import Vue from 'vue';
+    import axios from 'axios';
     import * as actions from '~/store/actions';
 
     export default {
@@ -251,7 +252,7 @@
                 },
                 foundKitty: {},
                 tokenising: false,
-                generatedBandanaSvg: null,
+                generatedBandanaUrl: null,
                 formData: {
                     errors: [],
                     name: null,
@@ -295,7 +296,7 @@
                 const eyes = _.find(data.traits, (trait) => trait.trait_type === 'eyes');
                 const coloreyes = _.find(data.traits, (trait) => trait.trait_type === 'coloreyes');
 
-                this.generatedBandanaSvg = await cryptoKaijusApiService.buildBandanaSvg(this.lookupForm.kittyId);
+                this.generatedBandanaUrl = cryptoKaijusApiService.buildBandanaUrl(this.lookupForm.kittyId);
 
                 this.foundKitty = {
                     ...data,
@@ -357,15 +358,17 @@
                         });
                 }
             },
-            pushKittyImageToIpfs() {
+            async pushKittyImageToIpfs() {
                 return ipfs.add({
-                        path: `${this.lookupForm.kittyId}-kitty.svg`,
-                        content: Buffer.from(this.generatedBandanaSvg)
+                        path: `/images/kitty.png`,
+                        content: Buffer.from(await cryptoKaijusApiService.downloadKittyBandana(this.lookupForm.kittyId), 'base64'),
+                        wrapWithDirectory: true
                     },
                     {pin: true})
                     .then((response) => {
-                        console.log(`Pushing kitty image to IPFS [${response[0].hash}]`);
-                        return response[0].hash;
+                        console.log(response);
+                        console.log(`Pushing kitty image to IPFS [${response[1].hash}]`);
+                        return `${response[1].hash}/kitty.png`;
                     });
             },
             checkForm() {
