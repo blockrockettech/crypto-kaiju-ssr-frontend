@@ -135,6 +135,7 @@ module.exports = {
         'bootstrap-vue/nuxt',
         '@nuxtjs/pwa'
     ],
+
     /*
     ** Axios module configuration
     */

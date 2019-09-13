@@ -16,7 +16,7 @@
                     <nuxt-link :to="{ name: 'create-kitty'}" class="btn btn-outline-primary w-25">
                         Birth Kitty
                     </nuxt-link>
-                    <span class="text-muted">Generate me some pussy 🐱</span>
+                    <span class="text-muted">Generate me some kitties 🐱</span>
                 </p>
 
             </div>

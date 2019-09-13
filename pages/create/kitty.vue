@@ -12,10 +12,10 @@
             </div>
             <div class="col">
                 <button type="button" class="btn btn-primary" @click="lookupKittyData">
-                    Pussy power
+                    Kitty power
                 </button>
                 <code class="pl-2" v-if="lookupForm.loadingKitty">
-                    Powering up pussy ...
+                    Powering up ...
                 </code>
             </div>
         </div>
@@ -174,6 +174,10 @@
 
                     <button type="button" class="btn btn-primary" @click="birthKitty">Kaiju Birth</button>
 
+                    <code class="pl-2" v-if="tokenising">
+                        Tokenising Kaiju ...
+                    </code>
+
                     <div class="row">
                         <div class="col mt-5" v-if="ipfsUpload.hash">
                             <code>IPFS Metadata: <a target="_blank"
@@ -208,8 +212,9 @@
     import cryptoKaijusApiService from '~/servcies/CryptoKaijusApiService';
     import ipfs from '~/servcies/ipfsService';
     import ClickableTransaction from '~/components/ClickableTransaction';
-    import * as actions from '~/store/actions';
     import Web3 from 'web3';
+    import Vue from 'vue';
+    import * as actions from '~/store/actions';
 
     export default {
         components: {ClickableTransaction},
@@ -245,6 +250,7 @@
                     kittyId: 1511406
                 },
                 foundKitty: {},
+                tokenising: false,
                 generatedBandanaSvg: null,
                 formData: {
                     errors: [],
@@ -289,8 +295,7 @@
                 const eyes = _.find(data.traits, (trait) => trait.trait_type === 'eyes');
                 const coloreyes = _.find(data.traits, (trait) => trait.trait_type === 'coloreyes');
 
-                const bandanaSvg = await cryptoKaijusApiService.buildBandanaSvg(this.lookupForm.kittyId);
-                this.generatedBandanaSvg = bandanaSvg;
+                this.generatedBandanaSvg = await cryptoKaijusApiService.buildBandanaSvg(this.lookupForm.kittyId);
 
                 this.foundKitty = {
                     ...data,
@@ -298,7 +303,6 @@
                     description: data.description,
                     external_kitty_uri: data.external_link,
                     background_color: data.background_color,
-                    // FIXME download image and manipulate it
                     raw_svg: `https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/${this.lookupForm.kittyId}.svg`,
                     attributes: {
                         colorprimary: colorprimary.value,
@@ -316,28 +320,30 @@
                 // Set form data to found kitty
                 this.formData.name = data.name;
                 this.formData.description = data.description;
-                this.formData.image = this.foundKitty.raw_svg;
                 this.formData.background_color = this.foundKitty.background_color;
 
                 this.formData.colour = colorprimary.value;
             },
-            birthKitty() {
+            async birthKitty() {
                 this.checkForm();
                 if (this.formData.errors.length === 0) {
+                    this.tokenising = true;
+
+                    // Set IPFS image on form data
+                    const imageHash = await this.pushKittyImageToIpfs();
+                    Vue.set(this.formData, 'image', `https://ipfs.infura.io/ipfs/${imageHash}`);
 
                     const ipfsData = this.generateIpfsData;
                     const recipient = this.formData.recipient;
                     const nfcId = this.formData.nfcId;
 
                     const tokenMetaData = JSON.stringify(ipfsData);
-                    console.log(`Pushing to IPFS`, tokenMetaData);
-
                     const buffer = Buffer.from(tokenMetaData);
 
                     ipfs.add(buffer, {pin: true})
                         .then(function (response) {
                             console.log(response);
-                            this.response.ipfsHash = response[0].hash;
+                            this.ipfsUpload.hash = response[0].hash;
                             this.$store.dispatch(actions.BIRTH_KAIJUS, {
                                 recipient,
                                 nfcId,
@@ -345,8 +351,22 @@
                                 ipfsData,
                             });
                         }.bind(this))
-                        .catch((error) => console.error(error));
+                        .catch((error) => console.error(error))
+                        .finally(() => {
+                            this.tokenising = false;
+                        });
                 }
+            },
+            pushKittyImageToIpfs() {
+                return ipfs.add({
+                        path: `${this.lookupForm.kittyId}-kitty.svg`,
+                        content: Buffer.from(this.generatedBandanaSvg)
+                    },
+                    {pin: true})
+                    .then((response) => {
+                        console.log(`Pushing kitty image to IPFS [${response[0].hash}]`);
+                        return response[0].hash;
+                    });
             },
             checkForm() {
                 this.formData.errors = [];
