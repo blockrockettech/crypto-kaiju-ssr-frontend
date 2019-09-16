@@ -7,7 +7,9 @@
                 Kitty ID
             </div>
             <div class="col">
-                <input type="text" class="form-control" id="kitty-id-lookup" placeholder="Kitty ID..."
+                <input type="text" class="form-control"
+                       id="kitty-id-lookup"
+                       placeholder="Kitty ID..."
                        v-model="lookupForm.kittyId">
             </div>
             <div class="col">
@@ -248,7 +250,7 @@
             return {
                 lookupForm: {
                     loadingKitty: false,
-                    kittyId: 1511406
+                    kittyId: null //1511406
                 },
                 foundKitty: {},
                 tokenising: false,
@@ -284,19 +286,23 @@
                 this.lookupForm.loadingKitty = true;
                 const data = await cryptoKaijusApiService.findKittyDataById(this.lookupForm.kittyId);
                 this.lookupForm.loadingKitty = false;
-                console.log(data);
+                console.log(JSON.stringify(data.traits));
 
-                const colorprimary = _.find(data.traits, (trait) => trait.trait_type === 'colorprimary');
-                const colorsecondary = _.find(data.traits, (trait) => trait.trait_type === 'colorsecondary');
-                const colortertiary = _.find(data.traits, (trait) => trait.trait_type === 'colortertiary');
-                const generation = _.find(data.traits, (trait) => trait.trait_type === 'generation');
-                const pattern = _.find(data.traits, (trait) => trait.trait_type === 'pattern');
-                const mouth = _.find(data.traits, (trait) => trait.trait_type === 'mouth');
-                const body = _.find(data.traits, (trait) => trait.trait_type === 'body');
-                const eyes = _.find(data.traits, (trait) => trait.trait_type === 'eyes');
-                const coloreyes = _.find(data.traits, (trait) => trait.trait_type === 'coloreyes');
 
                 this.generatedBandanaUrl = cryptoKaijusApiService.buildBandanaUrl(this.lookupForm.kittyId);
+
+                // We have found the colour accross two different properties
+                const colorprimary = _.find(data.traits, (trait) => trait.trait_type === 'colorprimary')
+                    || _.find(data.traits, (trait) => trait.trait_type === 'base_colour');
+
+                // Merge all other properties into attributes
+                let attributes = {};
+                _.forEach(data.traits, (trait) => {
+                    attributes[trait.trait_type] = trait.value;
+                });
+
+                delete attributes['cooldown_timer'];
+                delete attributes['cooldown_index'];
 
                 this.foundKitty = {
                     ...data,
@@ -305,17 +311,7 @@
                     external_kitty_uri: data.external_link,
                     background_color: data.background_color,
                     raw_svg: `https://storage.googleapis.com/ck-kitty-image/0x06012c8cf97bead5deae237070f9587f8e7a266d/${this.lookupForm.kittyId}.svg`,
-                    attributes: {
-                        colorprimary: colorprimary.value,
-                        colorsecondary: colorsecondary.value,
-                        colortertiary: colortertiary.value,
-                        generation: generation.value,
-                        pattern: pattern.value,
-                        mouth: mouth.value,
-                        body: body.value,
-                        eyes: eyes.value,
-                        coloreyes: coloreyes.value,
-                    }
+                    attributes: attributes
                 };
 
                 // Set form data to found kitty
