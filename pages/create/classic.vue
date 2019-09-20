@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Kaiju Foundry</h1>
+    <h1>Classic Kaiju Foundry</h1>
 
     <div class="row mt-5">
       <div class="col ml-3 mr-3">
@@ -185,16 +185,15 @@
   import {mapState} from 'vuex';
   import * as _ from 'lodash';
   import * as moment from 'moment';
-  import IPFS from 'ipfs-api';
+  import ipfs from '~/servcies/ipfsService';
   import Web3 from 'web3';
   import * as actions from '~/store/actions';
   import ClickableTransaction from '~/components/ClickableTransaction';
-
-  const ipfs = IPFS('ipfs.infura.io', '5001', {protocol: 'https'});
+  import {kclass, skills} from '../../servcies/comonData';
 
   export default {
     layout: 'default',
-    name: 'creator',
+    name: 'classic',
     components: {ClickableTransaction},
     data() {
       return {
@@ -226,83 +225,9 @@
               uri: 'https://ipfs.infura.io/ipfs/QmNgaX5Djp48JXdSj6yWz6WmAmGqnBDMoqHpDR4UA4NHVv'
             },
           ],
-          kclass: [
-            'Leader',
-            'Determined',
-            'Mutant',
-            'Cute',
-            'Explorer',
-            'Creative',
-            'Sporty',
-            'Arrogant',
-            'Kind',
-            'Sneaky',
-            'Firey',
-            'Warrior',
-            'Adventurer',
-            'Gross',
-            'Hero',
-            'Joker',
-            'Prankster',
-            'Intelligent',
-            'Mythical',
-            'Wizard',
-            'Genius',
-            'Doctor',
-            'Witch',
-            'Sophisticated',
-            'Omnipotent',
-            'Rare AF',
-          ],
-          skills: [
-            'Influential',
-            'Cryptography Expert',
-            'Hungry',
-            'Lover',
-            'Dancer',
-            'Fluffy',
-            'Writer',
-            'Musician',
-            'Liar',
-            'Comedy',
-            'Retired',
-            'Technical',
-            'Designer',
-            'Fighter',
-            'Fashionable',
-            'Chubby',
-            'Thief',
-            'Magic',
-            'Engineer',
-            'Scavenger',
-            'Communicator',
-            'Entrepreneurial',
-            'Analytical',
-            'Tomfoolery',
-            'Plumber',
-            'Witty',
-            'Flatulent',
-            'Slimy',
-            'Speedy',
-            'Janitor',
-            'Actor',
-            'Gentleman',
-            'Hodler',
-            'Actress',
-            'Psychic',
-            'Collector',
-            'Inquisitive',
-            'Ambitious',
-            'Brave',
-            'Frugal',
-            'Charming',
-            'Frank',
-            'Gregarious',
-            'Philosophical',
-            'Sailor',
-            'Rascal',
-          ],
-          batch: ['Jaiantokoin', 'Genesis']
+          kclass: kclass,
+          skills: skills,
+          batch: ['Jaiantokoin', 'Genesis', "Spookymon"]
         },
         formData: {
           errors: [],
@@ -331,7 +256,7 @@
           let nfcId = this.formData.nfcId;
 
           let buffer = Buffer.from(JSON.stringify(ipfsData));
-          ipfs.add(buffer)
+          ipfs.add(buffer, {pin: true})
             .then(function (response) {
               console.log(response);
               this.response.ipfsHash = response[0].hash;
@@ -358,6 +283,9 @@
         }
         if (!this.formData.description) {
           this.formData.errors.push('Description is required.');
+        }
+        if (!this.formData.nfcId) {
+          this.formData.errors.push('NFC ID is required.');
         }
         if (!this.formData.colour) {
           this.formData.errors.push('Colour is required.');
