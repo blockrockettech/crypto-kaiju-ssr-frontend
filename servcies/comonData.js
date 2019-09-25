@@ -1,5 +1,7 @@
+const _ = require('lodash');
+
 module.exports = {
-    kclass: [
+    kclass: _.orderBy([
         'Leader',
         'Determined',
         'Mutant',
@@ -26,8 +28,9 @@ module.exports = {
         'Sophisticated',
         'Omnipotent',
         'Rare AF',
-    ],
-    skills: [
+        'Devcon 5',
+    ]),
+    skills: _.orderBy([
         'Influential',
         'Cryptography Expert',
         'Hungry',
@@ -74,5 +77,6 @@ module.exports = {
         'Philosophical',
         'Sailor',
         'Rascal',
-    ],
+        'UX Champion',
+    ]),
 };
