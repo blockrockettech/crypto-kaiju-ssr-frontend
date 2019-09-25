@@ -78,6 +78,6 @@ module.exports = {
         'Sailor',
         'Rascal',
         'UX Champion',
-	'Spooky',
+        'Spooky',
     ]),
 };
