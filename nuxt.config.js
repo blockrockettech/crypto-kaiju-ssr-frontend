@@ -133,7 +133,8 @@ module.exports = {
         '@nuxtjs/axios',
         // Doc: https://bootstrap-vue.js.org/docs/
         'bootstrap-vue/nuxt',
-        '@nuxtjs/pwa'
+        '@nuxtjs/pwa',
+        ['@nuxtjs/google-tag-manager', { id: 'GTM-PF4KKMF' }],
     ],
 
     /*

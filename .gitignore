@@ -76,3 +76,4 @@ crypto-kaiju-nuxt-ssr.iml
 /src/dist/
 .nuxt/
 crypto-kaiju-ssr-frontend.iml
+.idea/
