@@ -4,6 +4,8 @@ echo "\e[33mBuilding /dist folder";
 npm run build;
 echo "\e[32mBuilt";
 
+gcloud config set project cryptokaiju-39233;
+
 echo "\e[33mSwitching account to cryptokaiju-live - make sure you have access!"
 gcloud config configurations activate cryptokaiju-live;
 

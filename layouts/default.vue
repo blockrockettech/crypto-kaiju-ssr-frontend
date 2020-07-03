@@ -104,11 +104,11 @@
         // Modern dapp browsers...
         if (window.ethereum) {
           console.log(`Using post-Nov 2nd (approval) MetaMask`);
-          bootStrappedWeb3 = new Web3(ethereum);
+          window.web3 = new Web3(ethereum);
           try {
             // Request account access if needed
-            await window.ethereum.enable();
-            console.log(`Enabled`);
+            await ethereum.enable();
+            console.log(`Web3 Enabled`);
 
             this.web3Detected = true;
           } catch (error) {
@@ -119,7 +119,7 @@
           }
         } else if (window.web3) {
           console.log(`Using pre-Nov 2nd MetaMask`);
-          bootStrappedWeb3 = new Web3(web3.currentProvider);
+          window.web3 = new Web3(web3.currentProvider);
 
           this.web3Detected = true;
         } else {
@@ -128,10 +128,9 @@
           this.web3Detected = false;
         }
 
-        if (bootStrappedWeb3) {
-          window.web3 = bootStrappedWeb3;
+        if (window.web3) {
           // Bootstrap the full app
-          this.$store.dispatch(actions.INIT_APP, bootStrappedWeb3);
+          this.$store.dispatch(actions.INIT_APP, window.web3);
         } else {
           // this.$store.dispatch(actions.LOAD_ALL_KAIJUS);
         }
