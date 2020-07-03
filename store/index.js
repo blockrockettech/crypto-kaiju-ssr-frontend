@@ -7,11 +7,8 @@ import moment from 'moment';
 import {getEtherscanAddress, getNetIdString} from '../servcies/utils';
 import _ from 'lodash';
 
-import truffleContract from 'truffle-contract';
 import CryptoKaijuABI from '../servcies/CryptoKaiju.json';
 import cryptoKaijusApiService from '../servcies/CryptoKaijusApiService';
-
-const CryptoKaiju = truffleContract(CryptoKaijuABI);
 
 Vue.use(Vuex);
 
@@ -50,10 +47,10 @@ const createStore = () => {
       [mutations.SET_ETHERSCAN_NETWORK](state, etherscanBase) {
         state.etherscanBase = etherscanBase;
       },
-      [mutations.SET_WEB3]: async function (state, {web3, contract}) {
+      [mutations.SET_WEB3]: async function (state, {web3, contract, address}) {
         state.web3 = web3;
         state.contract = contract;
-        state.contractAddress = (await CryptoKaiju.deployed()).address;
+        state.contractAddress = address;
       },
       [mutations.SET_KAIJUS_UPLOAD_HASH](state, hash) {
         state.uploadedKaijusHashs = hash;
@@ -90,20 +87,18 @@ const createStore = () => {
           });
       },
       [actions.INIT_APP]: async function ({commit, dispatch, state}, web3) {
+        console.log(`INIT_APP called web3 version ${_.get(web3, 'version')}`);
 
-        CryptoKaiju.setProvider(web3.currentProvider);
-
-        //dirty hack for web3@1.0.0 support for localhost testrpc, see https://github.com/trufflesuite/truffle-contract/issues/56#issuecomment-331084530
-        if (typeof CryptoKaiju.currentProvider.sendAsync !== 'function') {
-          CryptoKaiju.currentProvider.sendAsync = function () {
-            return CryptoKaiju.currentProvider.send.apply(
-              CryptoKaiju.currentProvider, arguments
-            );
-          };
-        }
+        const network = await web3.eth.net.getId();
+        console.log('Network found', network);
 
         // Set the web3 instance
-        commit(mutations.SET_WEB3, {web3, contract: CryptoKaiju});
+        const address = CryptoKaijuABI.networks[network.toString()].address;
+        commit(mutations.SET_WEB3, {
+          web3,
+          contract: new web3.eth.Contract(CryptoKaijuABI.abi, address),
+          address
+        });
 
         dispatch(actions.GET_CURRENT_NETWORK);
 
@@ -112,10 +107,8 @@ const createStore = () => {
         let account = accounts[0];
 
         const refreshHandler = async () => {
-          let updatedAccounts = await web3.eth.getAccounts();
-          let contract = await CryptoKaiju.deployed();
-
-          let totalSupply = (await contract.totalSupply()).toString('10');
+          const updatedAccounts = await web3.eth.getAccounts();
+          const totalSupply = (await state.contract.methods.totalSupply().call()).toString('10');
           commit(mutations.SET_KAIJUS_TOTAL_SUPPLY, totalSupply);
 
           if (updatedAccounts[0] !== account) {
@@ -137,14 +130,13 @@ const createStore = () => {
         await refreshHandler();
       },
       [actions.BIRTH_KAIJUS]: async function ({commit, dispatch, state}, {ipfsData, tokenURI, nfcId, recipient}) {
-        const contract = await state.contract.deployed();
 
         let {attributes} = ipfsData;
         let {dob} = attributes;
 
         console.log(recipient, nfcId, tokenURI, moment(dob).unix());
 
-        const {tx} = await contract.mintTo(recipient, nfcId, tokenURI, moment(dob).unix(), {from: state.account});
+        const {tx} = await state.contract.methods.mintTo(recipient, state.web3.utils.fromAscii(nfcId), tokenURI, moment(dob).unix()).send({from: state.account});
 
         console.log(tx);
 
