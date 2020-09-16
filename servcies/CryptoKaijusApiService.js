@@ -6,7 +6,8 @@ const axios = require('axios');
 
 const API_CONFIG = {
     local: 'http://localhost:5000/cryptokaiju-39233/us-central1/main/api',
-    live: 'https://api.cryptokaiju.io/api'
+    // live: 'https://api.cryptokaiju.io/api'
+    live: 'https://us-central1-cryptokaiju-39233.cloudfunctions.net/main/api'
 };
 
 const getApi = () => {
